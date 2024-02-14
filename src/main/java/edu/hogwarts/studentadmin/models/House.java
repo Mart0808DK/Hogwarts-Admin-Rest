@@ -1,18 +1,18 @@
 package edu.hogwarts.studentadmin.models;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity(name = "house")
 public class House {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String founder;
+    @ElementCollection
     private List<String> colors = new ArrayList<>();
 
     public House(Long id, String name, String founder, List<String> colors) {

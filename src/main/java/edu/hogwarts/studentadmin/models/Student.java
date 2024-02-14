@@ -92,6 +92,10 @@ public class Student {
         return prefect;
     }
 
+    public boolean isPrefect() {
+        return prefect;
+    }
+
     public void setPrefect(Boolean prefect) {
         this.prefect = prefect;
     }
@@ -116,8 +120,24 @@ public class Student {
         return graduated;
     }
 
+    public Boolean isGraduated(){
+        return graduated;
+    }
+
     public void setGraduated(Boolean graduated) {
         this.graduated = graduated;
+    }
+
+    public String getFullName() {
+        if (hasMiddleName() && getMiddleName() != null) {
+            return firstName + " " + middleName + " " + lastName;
+        } else {
+            return firstName + " " + lastName;
+        }
+    }
+
+    public boolean hasMiddleName() {
+        return middleName != null;
     }
 
     public void setFullName(String fullName) {
