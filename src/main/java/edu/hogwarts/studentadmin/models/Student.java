@@ -143,4 +143,19 @@ public class Student {
     public Long getId() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "firstName='" + firstName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", house=" + house +
+                ", prefect=" + prefect +
+                ", enrollmentYear=" + enrollmentYear +
+                ", graduationYear=" + graduationYear +
+                ", graduated=" + graduated +
+                '}';
+    }
 }

@@ -4,15 +4,18 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class House {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String founder;
-    private String[] colors;
+    private List<String> colors = new ArrayList<>();
 
-    public House(Long id, String name, String founder, String[] colors) {
+    public House(Long id, String name, String founder, List<String> colors) {
         this.id = id;
         this.name = name;
         this.founder = founder;
@@ -37,15 +40,24 @@ public class House {
         this.founder = founder;
     }
 
-    public String[] getColors() {
+    public List<String> getColors() {
         return colors;
     }
 
-    public void setColors(String[] colors) {
+    public void setColors(List<String> colors) {
         this.colors = colors;
     }
 
     public Long getId() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return "House{" +
+                "name='" + name + '\'' +
+                ", founder='" + founder + '\'' +
+                ", colors=" + colors +
+                '}';
     }
 }

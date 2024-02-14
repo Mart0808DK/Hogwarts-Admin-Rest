@@ -130,4 +130,19 @@ public class Teacher {
     public Long getId() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "firstName='" + firstName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", house=" + house +
+                ", headOfHouse=" + headOfHouse +
+                ", employment=" + employment +
+                ", employmentStart=" + employmentStart +
+                ", employmentEnd=" + employmentEnd +
+                '}';
+    }
 }
