@@ -2,7 +2,10 @@ package edu.hogwarts.studentadmin.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
 @Entity(name = "course")
 public class Course {
     @Id
@@ -11,18 +14,18 @@ public class Course {
     private String subject;
     private int schoolYear;
     private Boolean current;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Teacher teacher;
-    @ManyToOne
-    private Student[] student;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Student> students = new ArrayList<>();
 
-    public Course(Long id, String subject, int schoolYear, Boolean current, Teacher teacher, Student[] student) {
+    public Course(Long id, String subject, int schoolYear, Boolean current, Teacher teacher, List<Student> students) {
         this.id = id;
         this.subject = subject;
         this.schoolYear = schoolYear;
         this.current = current;
         this.teacher = teacher;
-        this.student = student;
+        this.students = students;
     }
 
     public Course(){}
@@ -59,12 +62,16 @@ public class Course {
         this.teacher = teacher;
     }
 
-    public Student[] getStudent() {
-        return student;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setStudent(Student[] student) {
-        this.student = student;
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
     }
 
     public Long getId() {
@@ -79,7 +86,7 @@ public class Course {
                 ", schoolYear=" + schoolYear +
                 ", current=" + current +
                 ", teacher=" + teacher +
-                ", student=" + Arrays.toString(student) +
+                ", students=" + students +
                 '}';
     }
 }
