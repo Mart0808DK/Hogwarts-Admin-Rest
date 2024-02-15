@@ -1,11 +1,9 @@
 package edu.hogwarts.studentadmin.models;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Arrays;
-
+@Entity(name = "course")
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,7 +11,9 @@ public class Course {
     private String subject;
     private int schoolYear;
     private Boolean current;
+    @ManyToOne
     private Teacher teacher;
+    @ManyToOne
     private Student[] student;
 
     public Course(Long id, String subject, int schoolYear, Boolean current, Teacher teacher, Student[] student) {
