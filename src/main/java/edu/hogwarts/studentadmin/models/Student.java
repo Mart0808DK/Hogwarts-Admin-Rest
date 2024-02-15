@@ -1,11 +1,10 @@
 package edu.hogwarts.studentadmin.models;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
+@Entity(name = "students")
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,6 +13,7 @@ public class Student {
     private String middleName;
     private String lastName;
     private LocalDate dateOfBirth;
+    @ManyToOne
     private House house;
     private Boolean prefect;
     private int enrollmentYear;
@@ -164,10 +164,12 @@ public class Student {
         return id;
     }
 
+
     @Override
     public String toString() {
         return "Student{" +
-                "firstName='" + firstName + '\'' +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
                 ", middleName='" + middleName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", dateOfBirth=" + dateOfBirth +

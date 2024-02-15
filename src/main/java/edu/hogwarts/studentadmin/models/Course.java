@@ -4,6 +4,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.util.Arrays;
+
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -67,5 +69,17 @@ public class Course {
 
     public Long getId() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "id=" + id +
+                ", subject='" + subject + '\'' +
+                ", schoolYear=" + schoolYear +
+                ", current=" + current +
+                ", teacher=" + teacher +
+                ", student=" + Arrays.toString(student) +
+                '}';
     }
 }

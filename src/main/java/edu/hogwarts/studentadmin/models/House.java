@@ -55,7 +55,8 @@ public class House {
     @Override
     public String toString() {
         return "House{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", founder='" + founder + '\'' +
                 ", colors=" + colors +
                 '}';
