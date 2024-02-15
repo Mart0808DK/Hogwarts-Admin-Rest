@@ -54,6 +54,10 @@ public class Course {
         this.current = current;
     }
 
+    public Boolean isCurrent(){
+        return current;
+    }
+
     public Teacher getTeacher() {
         return teacher;
     }
