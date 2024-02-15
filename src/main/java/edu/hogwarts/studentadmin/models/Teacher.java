@@ -16,6 +16,7 @@ public class Teacher {
     @ManyToOne
     private House house;
     private Boolean headOfHouse;
+    @Enumerated(EnumType.STRING)
     private EmpType employment;
     private LocalDate employmentStart;
     private LocalDate employmentEnd;
@@ -81,6 +82,10 @@ public class Teacher {
 
     public void setHeadOfHouse(Boolean headOfHouse) {
         this.headOfHouse = headOfHouse;
+    }
+
+    public boolean isHeadOfHouse() {
+        return headOfHouse;
     }
 
     public EmpType getEmployment() {
