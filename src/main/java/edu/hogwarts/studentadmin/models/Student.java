@@ -1,5 +1,7 @@
 package edu.hogwarts.studentadmin.models;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -80,12 +82,18 @@ public class Student {
         this.dateOfBirth = dateOfBirth;
     }
 
+    @JsonIgnore
     public House getHouse() {
         return house;
     }
 
     public void setHouse(House house) {
         this.house = house;
+    }
+
+    @JsonGetter("house")
+    public String getHouseName(){
+        return house.getName();
     }
 
     public Boolean getPrefect() {

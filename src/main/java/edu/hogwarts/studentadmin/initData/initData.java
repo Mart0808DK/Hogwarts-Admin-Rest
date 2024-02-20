@@ -59,10 +59,10 @@ public class initData implements ApplicationRunner {
         slytherinColors.add("Green");
         slytherinColors.add("Silver");
 
-        var gryffindor = new House(1L, "Gryffindor", "Godric Gryffindor", gryffindorColors);
-        var hufflepuff = new House(2L, "Hufflepuff", "Helga Hufflepuff", hufflepuffColors);
-        var ravenclaw = new House(3L, "Ravenclaw", "Rowena Ravenclaw", ravenclawColors);
-        var slytherin = new House(4L, "Slytherin", "Salazar Slytherin", slytherinColors);
+        var gryffindor = new House("Gryffindor", "Godric Gryffindor", gryffindorColors);
+        var hufflepuff = new House("Hufflepuff", "Helga Hufflepuff", hufflepuffColors);
+        var ravenclaw = new House("Ravenclaw", "Rowena Ravenclaw", ravenclawColors);
+        var slytherin = new House("Slytherin", "Salazar Slytherin", slytherinColors);
 
 
         houseRepository.save(gryffindor);
@@ -73,10 +73,10 @@ public class initData implements ApplicationRunner {
 
 
     private void generateStudents() {
-        var gryffindor = houseRepository.findById(1L);
-        var hufflepuff = houseRepository.findById(2L);
-        var ravenclaw = houseRepository.findById(3L);
-        var slytherin = houseRepository.findById(4L);
+        var gryffindor = houseRepository.findById("Gryffindor");
+        var hufflepuff = houseRepository.findById("Hufflepuff");
+        var ravenclaw = houseRepository.findById("Ravenclaw");
+        var slytherin = houseRepository.findById("Slytherin");
         if (gryffindor.isEmpty() || hufflepuff.isEmpty() || ravenclaw.isEmpty() || slytherin.isEmpty()) {
             return;
         }
@@ -98,10 +98,10 @@ public class initData implements ApplicationRunner {
     }
 
     public void generetaTeacher(){
-        var gryffindor = houseRepository.findById(1L);
-        var hufflepuff = houseRepository.findById(2L);
-        var ravenclaw = houseRepository.findById(3L);
-        var slytherin = houseRepository.findById(4L);
+        var gryffindor = houseRepository.findById("Gryffindor");
+        var hufflepuff = houseRepository.findById("Hufflepuff");
+        var ravenclaw = houseRepository.findById("Ravenclaw");
+        var slytherin = houseRepository.findById("Slytherin");
         if (gryffindor.isEmpty() || hufflepuff.isEmpty() || ravenclaw.isEmpty() || slytherin.isEmpty()) {
             return;
         }
@@ -119,10 +119,10 @@ public class initData implements ApplicationRunner {
     }
 
     public void generateCourse() {
-        var gryffindor = houseRepository.findById(1L);
-        var hufflepuff = houseRepository.findById(2L);
-        var ravenclaw = houseRepository.findById(3L);
-        var slytherin = houseRepository.findById(4L);
+        var gryffindor = houseRepository.findById("Gryffindor");
+        var hufflepuff = houseRepository.findById("Hufflepuff");
+        var ravenclaw = houseRepository.findById("Ravenclaw");
+        var slytherin = houseRepository.findById("Slytherin");
 
         if (gryffindor.isEmpty() || hufflepuff.isEmpty() || ravenclaw.isEmpty() || slytherin.isEmpty()) {
             return;

@@ -8,15 +8,12 @@ import java.util.List;
 @Entity(name = "house")
 public class House {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private String name;
     private String founder;
     @ElementCollection
     private List<String> colors = new ArrayList<>();
 
-    public House(Long id, String name, String founder, List<String> colors) {
-        this.id = id;
+    public House(String name, String founder, List<String> colors) {
         this.name = name;
         this.founder = founder;
         this.colors = colors;
@@ -48,15 +45,10 @@ public class House {
         this.colors = colors;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     @Override
     public String toString() {
         return "House{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", founder='" + founder + '\'' +
                 ", colors=" + colors +
                 '}';
