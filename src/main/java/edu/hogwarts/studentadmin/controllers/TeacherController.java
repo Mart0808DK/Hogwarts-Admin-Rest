@@ -63,6 +63,46 @@ public class TeacherController {
         return ResponseEntity.notFound().build();
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<Teacher> partialUpdate(@RequestBody Teacher updatedTeacher, @PathVariable("id") Long id) {
+        var teacherToUpdate = teacherRepository.findById(id);
+        if(teacherToUpdate.isPresent()) {
+            var existingTeacher = teacherToUpdate.get();
+
+            if(updatedTeacher.getFirstName() != null) {
+                existingTeacher.setFirstName(updatedTeacher.getFirstName());
+            }
+            if(updatedTeacher.getMiddleName() != null) {
+                existingTeacher.setMiddleName(updatedTeacher.getMiddleName());
+            }
+            if(updatedTeacher.getLastName() != null) {
+                existingTeacher.setLastName(updatedTeacher.getLastName());
+            }
+            if(updatedTeacher.getDateOfBirth() != null) {
+                existingTeacher.setDateOfBirth(updatedTeacher.getDateOfBirth());
+            }
+
+            existingTeacher.setHeadOfHouse(updatedTeacher.isHeadOfHouse());
+
+            if(updatedTeacher.getEmployment() != null) {
+                existingTeacher.setEmployment(updatedTeacher.getEmployment());
+            }
+            if(updatedTeacher.getEmploymentStart() != null) {
+                existingTeacher.setEmploymentStart(updatedTeacher.getEmploymentStart());
+            }
+            if(updatedTeacher.getEmploymentEnd() != null) {
+                existingTeacher.setEmploymentEnd(updatedTeacher.getEmploymentEnd());
+            }
+            if(updatedTeacher.getHouse() != null) {
+                existingTeacher.setHouse(updatedTeacher.getHouse());
+            }
+
+            teacherRepository.save(existingTeacher);
+            return ResponseEntity.ok(existingTeacher);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Teacher> delete(@PathVariable("id") Long id) {
         var studentToDelete = this.teacherRepository.findById(id);

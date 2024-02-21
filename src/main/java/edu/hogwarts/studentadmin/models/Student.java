@@ -2,6 +2,7 @@ package edu.hogwarts.studentadmin.models;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -18,11 +19,13 @@ public class Student {
     @ManyToOne(fetch = FetchType.EAGER)
     private House house;
     private Boolean prefect;
-    private int enrollmentYear;
-    private int graduationYear;
+    private Integer enrollmentYear;
+    private Integer graduationYear;
     private Boolean graduated;
 
-    public Student(Long id, String firstName, String middleName, String lastName, LocalDate dateOfBirth, House house, Boolean prefect, int enrollmentYear, int graduationYear, Boolean graduated) {
+    private Integer schoolYear;
+
+    public Student(Long id, String firstName, String middleName, String lastName, LocalDate dateOfBirth, House house, Boolean prefect, Integer enrollmentYear, Integer graduationYear, Boolean graduated, Integer schoolYear) {
         this.id = id;
         this.firstName = firstName;
         this.middleName = middleName;
@@ -33,6 +36,7 @@ public class Student {
         this.enrollmentYear = enrollmentYear;
         this.graduationYear = graduationYear;
         this.graduated = graduated;
+        this.schoolYear = schoolYear;
     }
 
     public Student(String fullname, LocalDate dateOfBirth){
@@ -50,26 +54,32 @@ public class Student {
 
     public Student(){}
 
+    @JsonIgnore
     public String getFirstName() {
         return firstName;
     }
 
+    @JsonIgnore
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
+    @JsonIgnore
     public String getMiddleName() {
         return middleName;
     }
 
+    @JsonIgnore
     public void setMiddleName(String middleName) {
         this.middleName = middleName;
     }
 
+    @JsonIgnore
     public String getLastName() {
         return lastName;
     }
 
+    @JsonIgnore
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
@@ -87,6 +97,7 @@ public class Student {
         return house;
     }
 
+    @JsonIgnore
     public void setHouse(House house) {
         this.house = house;
     }
@@ -100,7 +111,7 @@ public class Student {
         return prefect;
     }
 
-    public boolean isPrefect() {
+    public Boolean isPrefect() {
         return prefect;
     }
 
@@ -108,7 +119,7 @@ public class Student {
         this.prefect = prefect;
     }
 
-    public int getEnrollmentYear() {
+    public Integer getEnrollmentYear() {
         return enrollmentYear;
     }
 
@@ -116,7 +127,7 @@ public class Student {
         this.enrollmentYear = enrollmentYear;
     }
 
-    public int getGraduationYear() {
+    public Integer getGraduationYear() {
         return graduationYear;
     }
 
@@ -136,6 +147,7 @@ public class Student {
         this.graduated = graduated;
     }
 
+    @JsonGetter("name")
     public String getFullName() {
         if (hasMiddleName() && getMiddleName() != null) {
             return firstName + " " + middleName + " " + lastName;
@@ -148,6 +160,7 @@ public class Student {
         return middleName != null;
     }
 
+    @JsonSetter("name")
     public void setFullName(String fullName) {
         int firstSpaceIndex = fullName.indexOf(" ");
         int lastSpaceIndex = fullName.lastIndexOf(" ");
@@ -186,6 +199,7 @@ public class Student {
                 ", enrollmentYear=" + enrollmentYear +
                 ", graduationYear=" + graduationYear +
                 ", graduated=" + graduated +
+                ", schoolYear=" + schoolYear +
                 '}';
     }
 }
