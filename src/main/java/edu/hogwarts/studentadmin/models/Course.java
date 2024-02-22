@@ -12,14 +12,14 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String subject;
-    private int schoolYear;
+    private Integer schoolYear;
     private Boolean current;
     @ManyToOne(fetch = FetchType.EAGER)
     private Teacher teacher;
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Student> students = new ArrayList<>();
 
-    public Course(Long id, String subject, int schoolYear, Boolean current, Teacher teacher, List<Student> students) {
+    public Course(Long id, String subject, Integer schoolYear, Boolean current, Teacher teacher, List<Student> students) {
         this.id = id;
         this.subject = subject;
         this.schoolYear = schoolYear;
@@ -38,7 +38,7 @@ public class Course {
         this.subject = subject;
     }
 
-    public int getSchoolYear() {
+    public Integer getSchoolYear() {
         return schoolYear;
     }
 
