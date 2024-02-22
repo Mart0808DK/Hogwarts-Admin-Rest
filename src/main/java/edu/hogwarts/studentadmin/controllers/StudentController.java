@@ -35,13 +35,30 @@ public class StudentController {
         return ResponseEntity.notFound().build();
     }
 
+//    @PostMapping
+//    public ResponseEntity<Object> create(@RequestBody Student student) {
+//        if (student.getFirstName() == null) {
+//            return ResponseEntity.badRequest().body("First name is required.");
+//        }
+//        return ResponseEntity.ok(studentRepository.save(student));
+//    }
+
     @PostMapping
     public ResponseEntity<Object> create(@RequestBody Student student) {
-        if (student.getFullName() == null) {
-            return ResponseEntity.badRequest().body("First name is required.");
+        // Assuming you have a valid full name in the student object
+        String fullName = student.getFullName();
+        if (fullName == null || fullName.isEmpty()) {
+            return ResponseEntity.badRequest().body("Full name cannot be empty.");
         }
-        return ResponseEntity.ok(studentRepository.save(student));
+
+        // Save the student to the database
+        Student savedStudent = studentRepository.save(student);
+
+        // Return response with the saved student
+        return ResponseEntity.ok(savedStudent);
     }
+
+
 
     @PatchMapping("/{id}")
     public ResponseEntity<Student> patch(@RequestBody Student updatedStudent, @PathVariable("id") Long id) {

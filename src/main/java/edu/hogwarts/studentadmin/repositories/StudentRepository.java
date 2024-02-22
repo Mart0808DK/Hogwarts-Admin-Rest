@@ -13,4 +13,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     Optional<Student> findFirstByLastNameIgnoreCase(String lastName);
 
     Optional<Student>findFirstByFirstNameIgnoreCaseAndMiddleNameIgnoreCaseAndLastNameIgnoreCase(String firstName, String middleName, String lastName);
+
+    Student findByFirstName(String studentName);
 }

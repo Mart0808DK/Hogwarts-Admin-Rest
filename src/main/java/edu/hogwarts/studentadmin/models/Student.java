@@ -18,11 +18,12 @@ public class Student {
     private LocalDate dateOfBirth;
     @ManyToOne(fetch = FetchType.EAGER)
     private House house;
+
+    private String houseOrgin;
     private Boolean prefect;
     private Integer enrollmentYear;
     private Integer graduationYear;
     private Boolean graduated;
-
     private Integer schoolYear;
 
     public Student(Long id, String firstName, String middleName, String lastName, LocalDate dateOfBirth, House house, Boolean prefect, Integer enrollmentYear, Integer graduationYear, Boolean graduated, Integer schoolYear) {
@@ -53,6 +54,9 @@ public class Student {
     }
 
     public Student(){}
+
+    public Student(String studentName) {
+    }
 
     @JsonIgnore
     public String getFirstName() {
@@ -103,8 +107,16 @@ public class Student {
     }
 
     @JsonGetter("house")
-    public String getHouseName(){
+    public String getHouseJson() {
+        if(house == null) return null;
         return house.getName();
+    }
+
+    @JsonSetter("house")
+    public void setHouseName(String houseOrgin) {
+        char firstLetter = houseOrgin.charAt(0);
+        houseOrgin = Character.toUpperCase(firstLetter) + houseOrgin.substring(1);
+        this.houseOrgin = houseOrgin;
     }
 
     public Boolean getPrefect() {

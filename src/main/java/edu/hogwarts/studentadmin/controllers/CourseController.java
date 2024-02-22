@@ -1,5 +1,6 @@
 package edu.hogwarts.studentadmin.controllers;
 
+import edu.hogwarts.studentadmin.dto.CourseDto;
 import edu.hogwarts.studentadmin.models.Course;
 import edu.hogwarts.studentadmin.models.Student;
 import edu.hogwarts.studentadmin.models.Teacher;
@@ -9,9 +10,7 @@ import edu.hogwarts.studentadmin.repositories.TeacherRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/courses")
@@ -110,6 +109,54 @@ public class CourseController {
         return ResponseEntity.ok(students);
     }
 
+    @PostMapping("/{id}/students")
+    public ResponseEntity<Course> addStudentsToCourse(@PathVariable Long id, @RequestBody CourseDto courseDto) {
+        Course course = courseRepository.findById(id).orElse(null);
+        if (course == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        List<Student> students = course.getStudents();
+        if (students == null) {
+            students = new ArrayList<>();
+        }
+
+        List<Object> studentsData = courseDto.getStudentsData();
+        if (studentsData != null) {
+            for (Object data : studentsData) {
+                if (data instanceof Map) {
+                    Map<String, Object> studentMap = (Map<String, Object>) data;
+                    if (studentMap.containsKey("id")) {
+                        long studentId = ((Number) studentMap.get("id")).longValue();
+                        Student student = studentRepository.findById(studentId).orElse(null);
+                        if (student != null && !students.contains(student)) {
+                            students.add(student);
+                        }
+                    } else if (studentMap.containsKey("name")) {
+                        String studentName = (String) studentMap.get("name");
+                        Student student = studentRepository.findByFirstName(studentName);
+                        if (student == null) {
+                            student = new Student(studentName);
+                            studentRepository.save(student);
+                        }
+                        if (!students.contains(student)) {
+                            students.add(student);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Assuming setStudents() replaces the existing list
+        course.setStudents(students);
+        courseRepository.save(course);
+
+        return ResponseEntity.ok(course);
+    }
+
+
+
+
     @PutMapping("/{id}/teacher/{teacherId}")
     public ResponseEntity<Course> setTeacherForCourse(@PathVariable long id, @PathVariable long teacherId) {
 
@@ -128,6 +175,55 @@ public class CourseController {
 
         return ResponseEntity.ok(course);
     }
+
+    @PatchMapping("/{id}/teacher/{teacherId}")
+    public ResponseEntity<Course> patchTeacherForCourse(@PathVariable long id, @PathVariable long teacherId, @RequestBody Teacher teacherToPatch){
+        Course course = courseRepository.findById(id).orElse(null);
+        if (course == null) {
+            return ResponseEntity.notFound().build();
+        }
+        var teacherToUpdate = teacherRepository.findById(teacherId);
+        if(teacherToUpdate.isPresent()) {
+            var existingTeacher = teacherToUpdate.get();
+
+            if(teacherToPatch.getFirstName() != null) {
+                existingTeacher.setFirstName(teacherToPatch.getFirstName());
+            }
+            if(teacherToPatch.getMiddleName() != null) {
+                existingTeacher.setMiddleName(teacherToPatch.getMiddleName());
+            }
+            if(teacherToPatch.getLastName() != null) {
+                existingTeacher.setLastName(teacherToPatch.getLastName());
+            }
+            if(teacherToPatch.getDateOfBirth() != null) {
+                existingTeacher.setDateOfBirth(teacherToPatch.getDateOfBirth());
+            }
+
+            existingTeacher.setHeadOfHouse(teacherToPatch.isHeadOfHouse());
+
+            if(teacherToPatch.getEmployment() != null) {
+                existingTeacher.setEmployment(teacherToPatch.getEmployment());
+            }
+            if(teacherToPatch.getEmploymentStart() != null) {
+                existingTeacher.setEmploymentStart(teacherToPatch.getEmploymentStart());
+            }
+            if(teacherToPatch.getEmploymentEnd() != null) {
+                existingTeacher.setEmploymentEnd(teacherToPatch.getEmploymentEnd());
+            }
+            if(teacherToPatch.getHouse() != null) {
+                existingTeacher.setHouse(teacherToPatch.getHouse());
+            }
+
+            teacherRepository.save(existingTeacher);
+
+            course.setTeacher(existingTeacher);
+            courseRepository.save(course);
+
+            return ResponseEntity.ok(course);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
 
 
     @PutMapping("/{id}/students/{studentId}")
