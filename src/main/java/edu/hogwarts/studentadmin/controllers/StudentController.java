@@ -1,26 +1,23 @@
 package edu.hogwarts.studentadmin.controllers;
 
 import edu.hogwarts.studentadmin.models.Student;
-import edu.hogwarts.studentadmin.repositories.StudentRepository;
+import edu.hogwarts.studentadmin.services.StudentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/students")
 public class StudentController {
-    private final StudentRepository studentRepository;
+    private final StudentService studentServices;
 
-    public StudentController(StudentRepository studentRepository) {
-        this.studentRepository = studentRepository;
+    public StudentController(StudentService studentServices) {
+        this.studentServices = studentServices;
     }
 
     @GetMapping
-    public ResponseEntity<List<Student>> gettAll() {
-        var students = this.studentRepository.findAll();
-        if (!students.isEmpty()) {
+    public ResponseEntity<Iterable<Student>> getAll() {
+        var students = this.studentServices.findAll();
+        if (students != null) {
             return ResponseEntity.ok(students);
         }
         return ResponseEntity.noContent().build();
@@ -28,7 +25,7 @@ public class StudentController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Student> get(@PathVariable Long id) {
-        var student = this.studentRepository.findById(id);
+        var student = this.studentServices.findById(id);
         if (student.isPresent()) {
             return ResponseEntity.ok(student.get());
         }
@@ -40,7 +37,7 @@ public class StudentController {
 //        if (student.getFirstName() == null) {
 //            return ResponseEntity.badRequest().body("First name is required.");
 //        }
-//        return ResponseEntity.ok(studentRepository.save(student));
+//        return ResponseEntity.ok(studentServices.save(student));
 //    }
 
     @PostMapping
@@ -52,7 +49,7 @@ public class StudentController {
         }
 
         // Save the student to the database
-        Student savedStudent = studentRepository.save(student);
+        Student savedStudent = studentServices.save(student);
 
         // Return response with the saved student
         return ResponseEntity.ok(savedStudent);
@@ -62,7 +59,7 @@ public class StudentController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<Student> patch(@RequestBody Student updatedStudent, @PathVariable("id") Long id) {
-        var studentToUpdate = studentRepository.findById(id);
+        var studentToUpdate = studentServices.findById(id);
         if (studentToUpdate.isPresent()) {
             var existingStudent = studentToUpdate.get();
 
@@ -94,7 +91,7 @@ public class StudentController {
                 existingStudent.setHouse(updatedStudent.getHouse());
             }
 
-            studentRepository.save(existingStudent);
+            studentServices.save(existingStudent);
             return ResponseEntity.ok(existingStudent);
         }
         return ResponseEntity.notFound().build();
@@ -105,29 +102,11 @@ public class StudentController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Student> update(@RequestBody Student student, @PathVariable("id") Long id) {
-        var studentToUpdate = studentRepository.findById(id);
-        if (studentToUpdate.isPresent()) {
-            var updatedStudent = studentToUpdate.get();
-            updatedStudent.setFullName(student.getFullName());
-            updatedStudent.setDateOfBirth(student.getDateOfBirth());
-            updatedStudent.setPrefect(student.isPrefect());
-            updatedStudent.setEnrollmentYear(student.getEnrollmentYear());
-            updatedStudent.setGraduationYear(student.getGraduationYear());
-            updatedStudent.setGraduated(student.isGraduated());
-            updatedStudent.setHouse(student.getHouse());
-            studentRepository.save(updatedStudent);
-            return ResponseEntity.ok(updatedStudent);
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.of(studentServices.updateIfExist(id, student));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Student> delete(@PathVariable("id") Long id) {
-        var studentToDelete = this.studentRepository.findById(id);
-        if (studentToDelete.isPresent()) {
-            this.studentRepository.delete(studentToDelete.get());
-            return ResponseEntity.ok(studentToDelete.get());
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.of(studentServices.deleteById(id));
     }
 }
