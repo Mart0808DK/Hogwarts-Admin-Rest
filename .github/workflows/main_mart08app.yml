@@ -10,11 +10,26 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  setEnv:
+    name: Set environment variables
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Set up environment variables
+        env:
+          super_secret: ${{ secrets.JDBC_DATABASE_URL }}
+          super_secret2: ${{ secrets.JDBC_USERNAME }}
+          super_secret3: ${{ secrets.JDBC_PASSWORD }}
+        run: |
+          echo "Setting up environment variables"
+          # You can perform any necessary actions here if needed
+
+  build:
+    name: Build and upload artifact
+    runs-on: ubuntu-latest
+    needs: setEnv
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - name: Set up Java version
         uses: actions/setup-java@v1
@@ -25,13 +40,13 @@ jobs:
         run: mvn clean install
 
       - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: java-app
           path: '${{ github.workspace }}/target/*.jar'
-          retention-days: 1
 
   deploy:
+    name: Deploy to Azure Web App
     runs-on: ubuntu-latest
     needs: build
     environment:
@@ -42,7 +57,7 @@ jobs:
   
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v2
         with:
           name: java-app
       
@@ -60,4 +75,5 @@ jobs:
           app-name: 'mart08App'
           slot-name: 'Production'
           package: '*.jar'
+
           
