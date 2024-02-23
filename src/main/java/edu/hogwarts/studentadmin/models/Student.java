@@ -58,6 +58,8 @@ public class Student {
     public Student(String studentName) {
     }
 
+
+
     @JsonIgnore
     public String getFirstName() {
         return firstName;
@@ -96,23 +98,23 @@ public class Student {
         this.dateOfBirth = dateOfBirth;
     }
 
-    @JsonIgnore
+
     public House getHouse() {
         return house;
     }
 
-    @JsonIgnore
+
     public void setHouse(House house) {
         this.house = house;
     }
 
-    @JsonGetter("house")
+    //@JsonGetter("house")
     public String getHouseJson() {
         if(house == null) return null;
         return house.getName();
     }
 
-    @JsonSetter("house")
+    //@JsonSetter("house")
     public void setHouseName(String houseOrgin) {
         char firstLetter = houseOrgin.charAt(0);
         houseOrgin = Character.toUpperCase(firstLetter) + houseOrgin.substring(1);
@@ -159,6 +161,22 @@ public class Student {
         this.graduated = graduated;
     }
 
+    public Integer getSchoolYear() {
+        return schoolYear;
+    }
+
+    public void setEnrollmentYear(Integer enrollmentYear) {
+        this.enrollmentYear = enrollmentYear;
+    }
+
+    public void setGraduationYear(Integer graduationYear) {
+        this.graduationYear = graduationYear;
+    }
+
+    public void setSchoolYear(Integer schoolYear) {
+        this.schoolYear = schoolYear;
+    }
+
     @JsonGetter("name")
     public String getFullName() {
         if (hasMiddleName() && getMiddleName() != null) {
@@ -197,6 +215,9 @@ public class Student {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     @Override
     public String toString() {
