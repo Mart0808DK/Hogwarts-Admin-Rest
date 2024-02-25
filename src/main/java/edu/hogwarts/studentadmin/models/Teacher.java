@@ -1,5 +1,6 @@
 package edu.hogwarts.studentadmin.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -36,26 +37,32 @@ public class Teacher {
 
     public Teacher(){}
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @JsonIgnore
     public String getFirstName() {
         return firstName;
     }
 
+    @JsonIgnore
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-
+    @JsonIgnore
     public String getMiddleName() {
         return middleName;
     }
-
+    @JsonIgnore
     public void setMiddleName(String middleName) {
         this.middleName = middleName;
     }
-
+    @JsonIgnore
     public String getLastName() {
         return lastName;
     }
-
+    @JsonIgnore
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }

@@ -1,7 +1,9 @@
 package edu.hogwarts.studentadmin.controllers;
 
+import edu.hogwarts.studentadmin.dto.HouseResponseDto;
 import edu.hogwarts.studentadmin.models.House;
 import edu.hogwarts.studentadmin.repositories.HouseRepository;
+import edu.hogwarts.studentadmin.services.HouseService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,16 +15,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/houses")
 public class HouseController {
-    private final HouseRepository houseRepository;
+    private final HouseService houseService;
 
 
-    public HouseController(HouseRepository houseRepository) {
-        this.houseRepository = houseRepository;
+    public HouseController(HouseService houseService) {
+        this.houseService = houseService;
     }
 
     @GetMapping
-    public ResponseEntity<List<House>> getAll() {
-        var houses = houseRepository.findAll();
+    public ResponseEntity<List<HouseResponseDto>> getAll() {
+        var houses = houseService.findAll();
         if (houses.isEmpty()){
             return ResponseEntity.noContent().build();
         }
@@ -31,14 +33,9 @@ public class HouseController {
     }
 
     @GetMapping("/{name}")
-    public ResponseEntity<House> get(@PathVariable String  name) {
-        var house = this.houseRepository.findById(name);
-        if (house.isPresent()) {
-            return ResponseEntity.ok(house.get());
-        }
-        return ResponseEntity.notFound().build();
-
-
+    public ResponseEntity<HouseResponseDto> get(@PathVariable String  name) {
+        var house = this.houseService.findById(name);
+        return house.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 

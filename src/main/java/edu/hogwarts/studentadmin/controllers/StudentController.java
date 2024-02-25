@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/students")
@@ -30,19 +31,9 @@ public class StudentController {
     @GetMapping("/{id}")
     public ResponseEntity<StudentResponseDto> get(@PathVariable Long id) {
         var student = this.studentServices.findById(id);
-        if (student.isPresent()) {
-            return ResponseEntity.ok(student.get());
-        }
-        return ResponseEntity.notFound().build();
+        return student.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-//    @PostMapping
-//    public ResponseEntity<Object> create(@RequestBody Student student) {
-//        if (student.getFirstName() == null) {
-//            return ResponseEntity.badRequest().body("First name is required.");
-//        }
-//        return ResponseEntity.ok(studentServices.save(student));
-//    }
 
     @PostMapping
     public ResponseEntity<StudentResponseDto> create(@RequestBody StudentRequestDto student) {
@@ -55,45 +46,12 @@ public class StudentController {
 
 
 
-//    @PatchMapping("/{id}")
-//    public ResponseEntity<Student> patch(@RequestBody Student updatedStudent, @PathVariable("id") Long id) {
-//        var studentToUpdate = studentServices.findById(id);
-//        if (studentToUpdate.isPresent()) {
-//            var existingStudent = studentToUpdate.get();
-//
-//            if (updatedStudent.getFirstName() != null) {
-//                existingStudent.setFirstName(updatedStudent.getFirstName());
-//            }
-//            if (updatedStudent.getMiddleName() != null) {
-//                existingStudent.setMiddleName(updatedStudent.getMiddleName());
-//            }
-//            if (updatedStudent.getLastName() != null) {
-//                existingStudent.setLastName(updatedStudent.getLastName());
-//            }
-//            if (updatedStudent.getDateOfBirth() != null) {
-//                existingStudent.setDateOfBirth(updatedStudent.getDateOfBirth());
-//            }
-//            if (updatedStudent.isPrefect() != null) {
-//                existingStudent.setPrefect(updatedStudent.isPrefect());
-//            }
-//            if (updatedStudent.getEnrollmentYear() != null) {
-//                existingStudent.setEnrollmentYear(updatedStudent.getEnrollmentYear());
-//            }
-//            if (updatedStudent.getGraduationYear() != null) {
-//                existingStudent.setGraduationYear(updatedStudent.getGraduationYear());
-//            }
-//            if (updatedStudent.isGraduated() != null) {
-//                existingStudent.setGraduated(updatedStudent.isGraduated());
-//            }
-//            if (updatedStudent.getHouse() != null) {
-//                existingStudent.setHouse(updatedStudent.getHouse());
-//            }
-//
-//            studentServices.save(existingStudent);
-//            return ResponseEntity.ok(existingStudent);
-//        }
-//        return ResponseEntity.notFound().build();
-//    }
+    @PatchMapping("/{id}")
+    public ResponseEntity<StudentResponseDto> patch(@RequestBody StudentRequestDto updatedStudent, @PathVariable("id") Long id) {
+        Optional<StudentResponseDto> patchedStudent = studentServices.patchStudent(id, updatedStudent);
+        return patchedStudent.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 
 
 

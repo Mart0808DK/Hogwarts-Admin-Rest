@@ -57,6 +57,14 @@ public class StudentService {
         return Optional.empty();
     }
 
+    public Optional<StudentResponseDto> patchStudent(Long id, StudentRequestDto studentDto) {
+        return studentRepository.findById(id).map(existingStudent -> {
+            updateEntity(existingStudent, studentDto);
+            Student updatedStudent = studentRepository.save(existingStudent);
+            return Optional.of(toDto(updatedStudent));
+        }).orElse(Optional.empty());
+    }
+
 
 
     public StudentResponseDto toDto(Student entity) {
@@ -93,6 +101,21 @@ public class StudentService {
         house.ifPresent(entity::setHouse);
 
         return entity;
+    }
 
+    private void updateEntity(Student entity, StudentRequestDto dto){
+        if (dto.firstName() != null) entity.setFirstName(dto.firstName());
+        if (dto.middleName() != null) entity.setMiddleName(dto.middleName());
+        if (dto.lastName() != null) entity.setLastName(dto.lastName());
+        if (dto.dateOfBirth() != null) entity.setDateOfBirth(dto.dateOfBirth());
+        if (dto.prefect() != null) entity.setPrefect(dto.prefect());
+        if (dto.schoolYear() != null) entity.setSchoolYear(dto.schoolYear());
+        if (dto.enrollmentYear() != null) entity.setEnrollmentYear(dto.enrollmentYear());
+        if (dto.graduationYear() != null) entity.setGraduationYear(dto.graduationYear());
+        if (dto.graduated() != null) entity.setGraduated(dto.graduated());
+        if (dto.house() != null){
+            Optional<House> house = houseRepository.findById(dto.house());
+            house.ifPresent(entity::setHouse);
+        }
     }
 }
