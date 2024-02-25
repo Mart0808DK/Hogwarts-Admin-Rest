@@ -103,6 +103,26 @@ public class StudentService {
         return entity;
     }
 
+    public Student convertToRequestDto(StudentResponseDto responseDto) {
+        Student entity = new Student();
+        entity.setId(responseDto.getId());
+        entity.setFirstName(responseDto.getFirstName());
+        entity.setMiddleName(responseDto.getMiddleName());
+        entity.setLastName(responseDto.getLastName());
+        entity.setDateOfBirth(responseDto.getDateOfBirth());
+        entity.setPrefect(responseDto.getPrefect());
+        entity.setEnrollmentYear(responseDto.getEnrollmentYear());
+        entity.setGraduationYear(responseDto.getGraduationYear());
+        entity.setSchoolYear(responseDto.getSchoolYear());
+        entity.setGraduated(responseDto.getGraduated());
+
+        Optional<House> house = houseRepository.findById(responseDto.getHouse());
+        house.ifPresent(entity::setHouse);
+
+        return entity;
+
+    }
+
     private void updateEntity(Student entity, StudentRequestDto dto){
         if (dto.firstName() != null) entity.setFirstName(dto.firstName());
         if (dto.middleName() != null) entity.setMiddleName(dto.middleName());
